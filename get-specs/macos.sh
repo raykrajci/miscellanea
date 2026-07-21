@@ -1,0 +1,8 @@
+echo "Hostname: $(hostname)"
+echo "Serial:   $(system_profiler SPHardwareDataType | awk -F': ' '/Serial Number/ {print $2}')"
+echo "Model:    $(sysctl -n hw.model)"
+echo "CPU/Chip: $(sysctl -n machdep.cpu.brand_string 2>/dev/null || system_profiler SPHardwareDataType | awk -F': ' '/Chip/ {print $2}')"
+echo "GPU:      $(system_profiler SPDisplaysDataType | awk -F': ' '/Chipset Model/ {print $2}' | paste -sd ", " -)"
+echo "RAM:      $(($(sysctl -n hw.memsize) / 1073741824)) GB"
+echo "Storage:  $(df -h / | awk 'NR==2 {print $2}')"
+echo "OS:       $(sw_vers -productName) $(sw_vers -productVersion)"
