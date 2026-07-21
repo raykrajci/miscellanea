@@ -1,0 +1,8 @@
+echo "Hostname: $(hostname)"
+echo "Serial:   $(sudo dmidecode -s system-serial-number 2>/dev/null || cat /sys/class/dmi/id/product_serial 2>/dev/null)"
+echo "Model:    $(sudo dmidecode -s system-product-name 2>/dev/null || cat /sys/class/dmi/id/product_name 2>/dev/null)"
+echo "CPU:      $(lscpu | grep 'Model name:' | sed 's/Model name:\s*//')"
+echo "GPU:      $(lspci | grep -iE 'vga|3d|display' | awk -F': ' '{print $2}' | paste -sd ", " -)"
+echo "RAM:      $(free -h | awk '/Mem:/ {print $2}')"
+echo "Storage:  $(df -h / | awk 'NR==2 {print $2}')"
+echo "OS:       $(cat /etc/os-release | grep -E '^PRETTY_NAME=' | cut -d'=' -f2 | tr -d '"')"
